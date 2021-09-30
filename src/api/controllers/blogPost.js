@@ -37,6 +37,26 @@ exports.getBlogPosts = async (req, res) => {
   }
 };
 
+// GET SPECIFIC BLOG POST
+exports.selectBlogPost = async (req, res) => {
+  try {
+    let blogPost = await BlogPost.findOne({ _id: req.params.id });
+    if (!blogPost)
+      return res.status(404).json({
+        status: "failed",
+        msg: `Blog post not found!`,
+      });
+
+    res.status(200).json({
+      status: "success",
+      blogPost,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+};
+
 // EDIT BLOG POST
 exports.editBlogPost = async (req, res) => {
   try {

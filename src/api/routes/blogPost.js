@@ -6,12 +6,13 @@ const {
   createBlogPost,
   editBlogPost,
   deleteBlogPost,
+  selectBlogPost,
 } = require("../controllers/blogPost");
 
+router.route("/").get(getBlogPosts).post(createBlogPost);
 router
-  .route("/")
-  .get(getBlogPosts)
-  .post(createBlogPost)
+  .route("/:id")
+  .get(selectBlogPost)
   .put(editBlogPost)
   .delete(deleteBlogPost);
 
