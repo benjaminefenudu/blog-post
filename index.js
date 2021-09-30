@@ -17,9 +17,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// Set test page
+// Set landing page
 app.get("/", (req, res) => {
-  res.send("<h1>Blog Post App Working...</h1>");
+  res.redirect("/api/post");
 });
 
 // Set base routes
