@@ -12,9 +12,7 @@ exports.createBlogPost = async (req, res) => {
     const blogPost = new BlogPost({ ...req.body });
     await blogPost.save();
 
-    res
-      .status(201)
-      .json({ status: "success", msg: "New Blog Post Created.", blogPost });
+    res.status(201).json(blogPost);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
@@ -30,7 +28,7 @@ exports.getBlogPosts = async (req, res) => {
         status: "success",
         msg: "There are no blog posts!",
       });
-    res.json({ blogPost });
+    res.status(200).json(blogPost);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
@@ -47,10 +45,7 @@ exports.selectBlogPost = async (req, res) => {
         msg: `Blog post not found!`,
       });
 
-    res.status(200).json({
-      status: "success",
-      blogPost,
-    });
+    res.status(200).json(blogPost);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
@@ -75,11 +70,7 @@ exports.editBlogPost = async (req, res) => {
     if (body) blogPost.body = body;
     await blogPost.save();
 
-    res.status(200).json({
-      status: "success",
-      msg: "Blog post has been updated",
-      blogPost,
-    });
+    res.status(200).json(blogPost);
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
@@ -89,17 +80,15 @@ exports.editBlogPost = async (req, res) => {
 // DELETE BLOG POST
 exports.deleteBlogPost = async (req, res) => {
   try {
-    const blogPost = await BlogPost.findByIdAndDelete(req.params.id);
+    let deleteBlogPost = await BlogPost.findByIdAndDelete(req.params.id);
 
-    if (!blogPost)
+    if (!deleteBlogPost)
       return res.status(404).json({
         status: "failed",
         msg: `Blog post not found!`,
       });
-    res.status(200).json({
-      status: "success",
-      msg: `Blog post successfully deleted.`,
-    });
+    const blogPost = await BlogPost.find();
+    res.status(200).json(blogPost);
   } catch (error) {
     res.status(500).json(error);
   }
